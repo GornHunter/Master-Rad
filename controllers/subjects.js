@@ -1,7 +1,12 @@
 const Subject = require('../models/Subject')
 
-const getAllSubjects = (req, res) => {
-    res.json('get all subjects')
+const getAllSubjects = async (req, res) => {
+    try{
+        const subjects = await Subject.find({})
+        res.status(200).json({subjects})
+    }catch(error){
+        res.status(500).json({msg: error})
+    }
 }
 
 const createSubject = async (req, res) => {
@@ -9,20 +14,56 @@ const createSubject = async (req, res) => {
         const subject = await Subject.create(req.body)
         res.status(201).json({subject})
     }catch(error){
-        res.status(500).json({msg:error})
+        res.status(500).json({msg: error})
     }
 }
 
-const getSubject = (req, res) => {
-    res.json('get single subject')
+const getSubject = async (req, res) => {
+    try{
+        const {id:subjectID} = req.params
+        const subject = await Subject.findOne({_id: subjectID})
+
+        if(!subject){
+            return res.status(404).json({msg: `No subject with id: ${subjectID}`})
+        }
+
+        res.status(200).json({subject})
+    }catch(error){
+        res.status(500).json({msg: error})
+    }
 }
 
-const updateSubject = (req, res) => {
-    res.json('upodate subject')
+const updateSubject = async (req, res) => {
+    try{
+        const {id:subjectID} = req.params
+        const subject = await Subject.findOneAndUpdate({_id:subjectID}, req.body, {
+            new: true, 
+            runValidators: true
+        })
+
+        if(!subject){
+            return res.status(404).json({msg: `No subject with id: ${subjectID}`})
+        }
+
+        res.status(200).json({id:subjectID, data:req.body})
+    }catch(error){
+        res.status(500).json({msg: error})
+    }
 }
 
-const deleteSubject = (req, res) => {
-    res.json('delete subject')
+const deleteSubject = async (req, res) => {
+    try{
+        const {id:subjectID} = req.params
+        const subject = await Subject.findOneAndDelete({_id:subjectID})
+
+        if(!subject){
+            return res.status(404).json({msg: `No subject with id: ${subjectID}`})
+        }
+
+        res.status(200).json({subject})
+    }catch(error){
+        res.status(500).json({msg: error})
+    }
 }
 
 module.exports = {
