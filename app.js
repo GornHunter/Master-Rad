@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const students = require('./routes/students')
+const subjects = require('./routes/subjects')
 const connectDB = require('./db/connect')
 require('dotenv').config()
 
@@ -14,6 +15,7 @@ app.get('/hello', (req, res) => {
 })
 
 app.use('/api/v1/students', students)
+app.use('/api/v1/subjects', subjects)
 
 const port = 3000
 
