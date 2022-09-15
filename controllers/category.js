@@ -4,8 +4,13 @@ const getAllCategories = (req ,res) => {
     res.json('get all categories')
 }
 
-const createCategory = (req ,res) => {
-    res.json('create category')
+const createCategory = async (req ,res) => {
+    try{
+        const category = await Category.create(req.body)
+        res.status(201).json({category})
+    }catch(error){
+        res.status(500).json({msg: error})
+    }
 }
 
 const getCategory = (req ,res) => {
