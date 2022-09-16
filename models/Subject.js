@@ -7,9 +7,7 @@ const SubjectSchema = new mongoose.Schema({
         required: [true, 'Must provide subject name'],
         trim: true
     },
-    category: {
-        type: Array
-    }
+    categories: [String]
 })
 
 module.exports = mongoose.model('Subject', SubjectSchema)
