@@ -41,7 +41,6 @@ header{
     background: #fff;
     color: #2f3640;
     transform: scale(1.1);
-
 }
 
 .navigation-menu i{
@@ -55,4 +54,17 @@ header{
 
 .add-subject{
     color: #1dd1a1;
+}
+
+.btns{
+    margin-top: 20px;
+    margin-left: 160px;
+}
+
+.lastName, .index{
+    margin-top: 10px;
+}
+
+.form-alert{
+    margin-left: 130px;
 }

@@ -6,13 +6,13 @@ const SubjectInfoSchema = new mongoose.Schema({
     },
     school_year: {
         type: String,
-        required: [true, 'Must provide school year'],
+        required: [true, 'Skolska godina mora biti popunjena'],
         trim: true,
         validate: {
             validator: function(v){
                 return /\b[0-9]{4}\/[0-9]{4}\b/.test(v)
             },
-            message: year => `${year.value} is not a valid school year`
+            message: year => `${year.value} niej validan format za skolsku godinu`
         }
     },
     points: [Number]
@@ -21,23 +21,23 @@ const SubjectInfoSchema = new mongoose.Schema({
 const StudentSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: [true, 'Must provide first name'],
+        required: [true, 'Ime mora biti popunjeno'],
         trim: true
     },
     lastName: {
         type: String,
-        required: [true, 'Must provide last name'],
+        required: [true, 'Prezime mora biti popunjeno'],
         trim: true
     },
     index: {
         type: String,
-        required: [true, 'Index must be provided'],
+        required: [true, 'Indeks mora biti popunjen'],
         trim: true,
         validate: {
             validator: function(v){
-                return /\b[a-zA-Z][0-9]{1}[0-9]{1,3}-[0-9]{4}\b/.test(v)
+                return /\b[a-zA-Z]*[0-9]{1}[0-9]{1,3}-[0-9]{4}\b/.test(v)
             },
-            message: index => `${index.value} is not a valid index`
+            message: index => `${index.value} nije validan format za indeks`
         }
     },
     subjects: [SubjectInfoSchema]
