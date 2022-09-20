@@ -12,7 +12,7 @@ const SubjectInfoSchema = new mongoose.Schema({
             validator: function(v){
                 return /\b[0-9]{4}\/[0-9]{4}\b/.test(v)
             },
-            message: year => `${year.value} niej validan format za skolsku godinu`
+            message: year => `${year.value} nije validan format za skolsku godinu`
         }
     },
     points: [Number]
@@ -35,7 +35,7 @@ const StudentSchema = new mongoose.Schema({
         trim: true,
         validate: {
             validator: function(v){
-                return /\b[a-zA-Z]*[0-9]{1}[0-9]{1,3}-[0-9]{4}\b/.test(v)
+                return /\b[a-zA-Z]+[0-9]{1}[0-9]{1,3}-[0-9]{4}\b/.test(v)
             },
             message: index => `${index.value} nije validan format za indeks`
         }

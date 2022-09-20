@@ -23,16 +23,11 @@ const getStudent = async (req, res) => {
     try{
         const {id:studentID} = req.params
         const student = await Student.findOne({_id: studentID})
-
-        //const {firstName, lastName, index, subjects} = student
-        //const subject = await Subject.findOne({_id: student.subjects[0].id})
-        //const {name, categories} = subject
-
+        
         if(!student){
             return res.status(404).json({msg: `No student with id: ${studentID}`})
         }
         
-        //res.status(200).json(`{${student.firstName}, ${student.lastName}, ${student.index}, ${subject.name}, ${subject.categories[0]}, ${subject.categories[1]}, ${subject.categories[2]}, ${student.subjects[0].school_year}}`)
         res.status(200).json({student})
     }catch(error){
         res.status(500).json({msg: error})

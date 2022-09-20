@@ -16,8 +16,8 @@
     <header>
         <div class="inner-width">
             <nav class="navigation-menu">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa-solid fa-user-plus add-student"></i> Dodaj studenta</a>
-                <a href="#"><i class="fa-solid fa-file-circle-plus add-subject"></i> Dodaj predmet</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddStudent"><i class="fa-solid fa-user-plus add-student"></i>Dodaj studenta</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddSubject"><i class="fa-solid fa-file-circle-plus add-subject"></i>Dodaj predmet</a>
             </nav>
         </div>
     </header>
@@ -33,11 +33,11 @@
     </section>
 
     <!-- Modal za studenta -->
-    <div class="modal fade zoom-in" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade zoom-in" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Dodavanje studenta</h5>
+                    <h5 class="modal-title" id="studentModalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -55,7 +55,7 @@
                             <input type="text" class="form-control" id="index">
                           </div>
                         <div class="btns">
-                            <button type="submit" class="btn btn-primary">Dodaj studenta</button>
+                            <button type="submit" class="btn btn-primary" id="btnAddStudent"></button>
                         </div>
                         <div class="form-alert"></div>
                     </form>

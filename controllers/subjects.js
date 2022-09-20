@@ -1,10 +1,8 @@
 const Subject = require('../models/Subject')
-const Category = require('../models/Category')
 
 const getAllSubjects = async (req, res) => {
     try{
         const subjects = await Subject.find({})
-        //const categories = await Category.find({})
         res.status(200).json({subjects})
     }catch(error){
         res.status(500).json({msg: error})
