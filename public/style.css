@@ -119,7 +119,12 @@ header{
     color: #1dd1a1;
 }
 
-.btns{
+.btns-student{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btns-subject{
     margin-top: 20px;
     text-align: center;
 }
@@ -128,11 +133,15 @@ header{
     margin-top: 10px;
 }
 
-.form-alert{
+.studentForm-alert{
     text-align: center;
 }
 
-.studentModal.fade, .modal-dialog{
+.subjectForm-alert{
+    text-align: center;
+}
+
+.studentModal.fade, .subjectModal.fade, .modal-dialog{
     -webkit-transform: translate(0,0);
     transform: translate(0,0);
 }
@@ -165,11 +174,27 @@ header{
     float: left;
 }
 
+.subjects-container {
+    width: 100%;
+    width: 90vw;
+    max-width: var(--fixed-width);
+    margin: 0 auto;
+    margin-top: 2rem;
+    padding-bottom: 4rem;
+    /*margin-left: 300px;*/
+    float: right;
+}
+
 .empty-list {
     text-align: center;
 }
 
 .students {
+    display: grid;
+    gap: 1rem;
+}
+
+.subjects {
     display: grid;
     gap: 1rem;
 }
@@ -185,7 +210,22 @@ header{
     align-items: center;
 }
 
+.single-subject {
+    padding: 1rem 2.5rem;
+    background: var(--white);
+    border-radius: var(--borderRadius);
+    box-shadow: var(--shadow-2);
+    transition: var(--transition);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .single-student:hover {
+    box-shadow: var(--shadow-4);
+}
+
+.single-subject:hover {
     box-shadow: var(--shadow-4);
 }
 
@@ -193,7 +233,17 @@ header{
     margin-bottom: 0;
 }
 
+.single-subject h5 {
+    margin-bottom: 0;
+}
+
 .student-links {
+    display: flex;
+    align-items: center;
+    gap: 0 0.5rem;
+}
+
+.subject-links {
     display: flex;
     align-items: center;
     gap: 0 0.5rem;
@@ -217,22 +267,6 @@ header{
     color: #2137b5;
 }
 
-.subjects-container {
-    width: 100%;
-    width: 90vw;
-    max-width: var(--fixed-width);
-    margin: 0 auto;
-    margin-top: 2rem;
-    padding-bottom: 4rem;
-    /*margin-left: 300px;*/
-    float: right;
-}
-
 .empty-list {
     text-align: center;
-}
-
-.students {
-    display: grid;
-    gap: 1rem;
 }

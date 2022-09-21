@@ -1,8 +1,8 @@
-const formDOM = document.querySelector('.student-form')
+const studentFormDOM = document.querySelector('.student-form')
 const firstNameDOM = document.getElementById('firstName')
 const lastNameDOM = document.getElementById('lastName')
 const indexDOM = document.getElementById('index')
-const formAlertDOM = document.querySelector('.form-alert')
+const studentFormAlertDOM = document.querySelector('.studentForm-alert')
 
 const studentsDOM = document.querySelector('.students')
 
@@ -14,7 +14,7 @@ let id = ''
 document.getElementById('aAddStudent').addEventListener('click', (e) => {
   studenth5.innerHTML = 'Dodavanje studenta'
   btnAddStudent.innerHTML = 'Dodaj studenta'
-  formDOM.className = 'student-form'
+  studentFormDOM.className = 'student-form'
   firstNameDOM.value = ''
   lastNameDOM.value = ''
   indexDOM.value = ''
@@ -81,7 +81,7 @@ studentsDOM.addEventListener('click', async (e) => {
 //azuriranje odredjenog studenta
 studentsDOM.addEventListener('click', async (e) => {
   e.preventDefault()
-  formDOM.className = 'updateStudent-form'
+  studentFormDOM.className = 'updateStudent-form'
   const element = e.target
   studenth5.innerHTML = 'Azuriranje studenta'
   btnAddStudent.innerHTML = 'Azuriraj studenta'
@@ -98,26 +98,26 @@ studentsDOM.addEventListener('click', async (e) => {
 })
 
 //dodavanje novog studenta/azuriranje postojeceg
-formDOM.addEventListener('submit', async (e) => {
+studentFormDOM.addEventListener('submit', async (e) => {
     e.preventDefault()
     const firstName = firstNameDOM.value
     const lastName = lastNameDOM.value
     const index = indexDOM.value
   
     try {
-      if(formDOM.className == 'student-form'){
+      if(studentFormDOM.className == 'student-form'){
         await axios.post('/api/v1/students', { firstName, lastName, index })
         showStudents()
         firstNameDOM.value = ''
         lastNameDOM.value = ''
         indexDOM.value = ''
 
-        formAlertDOM.style.display = 'block'
-        formAlertDOM.textContent = 'Student uspesno dodat'
-        formAlertDOM.classList.remove('text-danger')
-        formAlertDOM.classList.add('text-success')
+        studentFormAlertDOM.style.display = 'block'
+        studentFormAlertDOM.textContent = 'Student uspesno dodat'
+        studentFormAlertDOM.classList.remove('text-danger')
+        studentFormAlertDOM.classList.add('text-success')
       }
-      else if(formDOM.className == 'updateStudent-form'){
+      else if(studentFormDOM.className == 'updateStudent-form'){
         const firstName = firstNameDOM.value
         const lastName = lastNameDOM.value
         const index = indexDOM.value
@@ -128,40 +128,40 @@ formDOM.addEventListener('submit', async (e) => {
         })
         showStudents()
 
-        formAlertDOM.style.display = 'block'
-        formAlertDOM.textContent = 'Student uspesno azuriran'
-        formAlertDOM.classList.remove('text-danger')
-        formAlertDOM.classList.add('text-success')
+        studentFormAlertDOM.style.display = 'block'
+        studentFormAlertDOM.textContent = 'Student uspesno azuriran'
+        studentFormAlertDOM.classList.remove('text-danger')
+        studentFormAlertDOM.classList.add('text-success')
       }
 
-      //formAlertDOM.style.display = 'block'
-      //formAlertDOM.textContent = 'Student uspesno dodat'
-      //formAlertDOM.classList.remove('text-danger')
-      //formAlertDOM.classList.add('text-success')
+      //studentFormAlertDOM.style.display = 'block'
+      //studentFormAlertDOM.textContent = 'Student uspesno dodat'
+      //studentFormAlertDOM.classList.remove('text-danger')
+      //studentFormAlertDOM.classList.add('text-success')
     } catch (error) {
-      formAlertDOM.style.display = 'block'
-      formAlertDOM.innerHTML = ''
+      studentFormAlertDOM.style.display = 'block'
+      studentFormAlertDOM.innerHTML = ''
 
 
       if(firstName == '')
-        formAlertDOM.innerHTML += error.response.data.msg.errors.firstName.message + "<br />"
+        studentFormAlertDOM.innerHTML += error.response.data.msg.errors.firstName.message + "<br />"
 
       if(lastName == '')
-        formAlertDOM.innerHTML += error.response.data.msg.errors.lastName.message + "<br />"
+        studentFormAlertDOM.innerHTML += error.response.data.msg.errors.lastName.message + "<br />"
 
       if(index == '')
-        formAlertDOM.innerHTML += error.response.data.msg.errors.index.message
+        studentFormAlertDOM.innerHTML += error.response.data.msg.errors.index.message
       
       if(index != '' && error.response.data.msg.errors.index != undefined){
-        formAlertDOM.innerHTML += error.response.data.msg.errors.index.message
+        studentFormAlertDOM.innerHTML += error.response.data.msg.errors.index.message
       }
 
-      formAlertDOM.classList.remove('text-success')
-      formAlertDOM.classList.add('text-danger')
+      studentFormAlertDOM.classList.remove('text-success')
+      studentFormAlertDOM.classList.add('text-danger')
     }
 
     setTimeout(() => {
-      formAlertDOM.style.display = 'none'
-    }, 3000)
+      studentFormAlertDOM.style.display = 'none'
+    }, 2000)
 })
 

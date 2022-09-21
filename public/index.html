@@ -8,7 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+    <script defer src="student.js"></script>
+    <script defer src="subject.js"></script>
     <title>Evidencija studenata</title>
 </head>
 <body>
@@ -17,7 +18,7 @@
         <div class="inner-width">
             <nav class="navigation-menu">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddStudent"><i class="fa-solid fa-user-plus add-student"></i>Dodaj studenta</a>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddSubject"><i class="fa-solid fa-file-circle-plus add-subject"></i>Dodaj predmet</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#subjectModal" id="aAddSubject"><i class="fa-solid fa-file-circle-plus add-subject"></i>Dodaj predmet</a>
             </nav>
         </div>
     </header>
@@ -54,16 +55,40 @@
                             <label for="index">Broj indeksa</label>
                             <input type="text" class="form-control" id="index">
                           </div>
-                        <div class="btns">
+                        <div class="btns-student">
                             <button type="submit" class="btn btn-primary" id="btnAddStudent"></button>
                         </div>
-                        <div class="form-alert"></div>
+                        <div class="studentForm-alert"></div>
                     </form>
                 </div>
                 <!--<div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
                 </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal za predmet -->
+    <div class="modal fade zoom-in" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="subjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="subjectModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="subject-form">
+                        <div class="form-group">
+                          <label for="name">Ime predmeta</label>
+                          <input type="text" class="form-control name" id="name">
+                        </div>
+                        <div class="btns-subject">
+                            <button type="submit" class="btn btn-primary" id="btnAddSubject"></button>
+                        </div>
+                        <div class="subjectForm-alert"></div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

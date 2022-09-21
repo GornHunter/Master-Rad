@@ -12,7 +12,8 @@ const getAllSubjects = async (req, res) => {
 const createSubject = async (req, res) => {
     try{
         const subject = await Subject.create(req.body)
-        res.status(201).json({subject})
+        res.status(201).json('')
+        //res.status(201).json({subject})
     }catch(error){
         res.status(500).json({msg: error})
     }
@@ -57,7 +58,8 @@ const updateSubject = async (req, res) => {
             return res.status(404).json({msg: `No subject with id: ${subjectID}`})
         }
 
-        res.status(200).json({id:subjectID, data:req.body})
+        res.status(200).json('')
+        //res.status(200).json({id:subjectID, data:req.body})
     }catch(error){
         res.status(500).json({msg: error})
     }

@@ -13,7 +13,7 @@ const getAllStudents = async (req, res) => {
 const createStudent = async (req, res) => {
     try{
         const student = await Student.create(req.body)
-        res.status(201).json({student})
+        res.status(201).json('')
     }catch(error){
         res.status(500).json({msg: error})
     }
@@ -46,7 +46,8 @@ const updateStudent = async (req, res) => {
             return res.status(404).json({msg: `No student with id: ${studentID}`})
         }
 
-        res.status(200).json({id:studentID, data:req.body})
+        res.status(200).json('')
+        //res.status(200).json({id:studentID, data:req.body})
     }catch(error){
         res.status(500).json({msg: error})
     }
