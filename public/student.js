@@ -33,7 +33,7 @@ const showStudents = async () => {
     const allStudents = students.map((student) => {
       const {_id: studentID, firstName, lastName, index} = student
       return `
-      <div class="single-student">
+      <div class="single-student" data-bs-toggle="modal" data-bs-target="#informationModal">
         <h5 class="fullName">
           ${firstName}&nbsp;${lastName}
         </h5>
@@ -63,11 +63,25 @@ const showStudents = async () => {
 
 showStudents()
 
-//brisanje odredjenog studenta
+//dobavljanje odredjenog studenta/brisanje odredjenog studenta
 studentsDOM.addEventListener('click', async (e) => {
+  e.preventDefault()
   const element = e.target
 
-  if (element.parentElement.classList.contains('delete-btn')) {
+  if (element.parentElement.classList.contains('edit-link')) {
+    studentFormDOM.className = 'updateStudent-form'
+    studenth5.innerHTML = 'Azuriranje studenta'
+    btnAddStudent.innerHTML = 'Azuriraj studenta'
+
+    const {data: {student}} = await axios.get(`/api/v1/students/${element.parentElement.dataset.id}`)
+    const {_id: studentID, firstName, lastName, index} = student
+
+    id = studentID
+    firstNameDOM.value = firstName
+    lastNameDOM.value = lastName
+    indexDOM.value = index
+  }
+  else if(element.parentElement.classList.contains('delete-btn')){
     const id = element.parentElement.dataset.id
     try {
       await axios.delete(`/api/v1/students/${id}`)
@@ -76,24 +90,24 @@ studentsDOM.addEventListener('click', async (e) => {
       console.log(error)
     }
   }
-})
+  else{
+    let tmp = ''
+    if(element.classList.contains('single-student')){
+      tmp = element.lastElementChild.lastElementChild.dataset.id
+    }
+    else if(element.classList.contains('fullName') || element.classList.contains('index-color'))
+      tmp = element.parentElement.lastElementChild.lastElementChild.dataset.id
+    
+    const {data: {student}} = await axios.get(`/api/v1/students/${tmp}`)
+    const {_id: studentID, firstName, lastName, index, subjects} = student
 
-//azuriranje odredjenog studenta
-studentsDOM.addEventListener('click', async (e) => {
-  e.preventDefault()
-  studentFormDOM.className = 'updateStudent-form'
-  const element = e.target
-  studenth5.innerHTML = 'Azuriranje studenta'
-  btnAddStudent.innerHTML = 'Azuriraj studenta'
-
-  if (element.parentElement.classList.contains('edit-link')) {
-    const {data: {student}} = await axios.get(`/api/v1/students/${element.parentElement.dataset.id}`)
-    const {_id: studentID, firstName, lastName, index} = student
-
-    id = studentID
-    firstNameDOM.value = firstName
-    lastNameDOM.value = lastName
-    indexDOM.value = index
+    document.getElementById('informationModalLabel').innerHTML = `Informacije o studentu ${firstName} ${lastName}`
+    if(subjects.length == 0)
+      document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} nema predmeta koje slusa.</h5>`
+    else{
+      document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} slusa sledece predmete:</h5>`
+      document.querySelector('.info').innerHTML += '<h4><ul><li>1</li><li>2</li><li>3</li></ul></h4>'
+    }
   }
 })
 
@@ -133,11 +147,6 @@ studentFormDOM.addEventListener('submit', async (e) => {
         studentFormAlertDOM.classList.remove('text-danger')
         studentFormAlertDOM.classList.add('text-success')
       }
-
-      //studentFormAlertDOM.style.display = 'block'
-      //studentFormAlertDOM.textContent = 'Student uspesno dodat'
-      //studentFormAlertDOM.classList.remove('text-danger')
-      //studentFormAlertDOM.classList.add('text-success')
     } catch (error) {
       studentFormAlertDOM.style.display = 'block'
       studentFormAlertDOM.innerHTML = ''
@@ -164,4 +173,3 @@ studentFormDOM.addEventListener('submit', async (e) => {
       studentFormAlertDOM.style.display = 'none'
     }, 2000)
 })
-

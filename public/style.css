@@ -192,11 +192,17 @@ header{
 .students {
     display: grid;
     gap: 1rem;
+    /*dodata 2 atributa*/
+    height: 420px;
+    overflow: auto;
 }
 
 .subjects {
     display: grid;
     gap: 1rem;
+    /*dodata 2 atributa*/
+    height: 420px;
+    overflow: auto;
 }
 
 .single-student {

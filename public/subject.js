@@ -7,18 +7,28 @@ const subjectsDOM = document.querySelector('.subjects')
 const subjecth5 = document.getElementById('subjectModalLabel')
 const btnAddSubject = document.getElementById('btnAddSubject')
 
+let subj = []
+let parentCat = ''
+let child1Cat = ''
+let child2Cat = ''
+let token = 0
+let categoryDOM = ''
 
-document.getElementById('aAddSubject').addEventListener('click', (e) => {
+document.getElementById('aAddSubject').addEventListener('click', () => {
     subjecth5.innerHTML = 'Dodavanje predmeta'
     btnAddSubject.innerHTML = 'Dodaj predmet'
     subjectFormDOM.className = 'subject-form'
     nameDOM.value = ''
+    if(token == 1){
+      removeCategoryElement()
+    }
 })
 
 //dobavljanje svih predmeta
 const showSubjects = async () => {
     try{
         const {data: {subjects}} = await axios.get('/api/v1/subjects')
+        //subj = subjects
 
         if(subjects.length < 1){
             subjectsDOM.innerHTML = '<h5 class="empty-list">Lista predmeta je prazna</h5>'
@@ -71,20 +81,28 @@ subjectsDOM.addEventListener('click', async (e) => {
     }
 })
 
-//azuriranje odredjenog predmeta
+//dobavljanje odredjenog predmeta
 subjectsDOM.addEventListener('click', async (e) => {
     e.preventDefault()
     subjectFormDOM.className = 'updateSubject-form'
     const element = e.target
     subjecth5.innerHTML = 'Azuriranje predmeta'
     btnAddSubject.innerHTML = 'Azuriraj predmet'
+
+    if(token == 0){
+      addCategoryElement()
+    }
   
     if (element.parentElement.classList.contains('edit-link')) {
       const {data: {subject}} = await axios.get(`/api/v1/subjects/${element.parentElement.dataset.id}`)
-      const {_id: subjectID, name} = subject
+      const {_id: subjectID, name, categories} = subject
   
       id = subjectID
       nameDOM.value = name
+      if(categories == undefined)
+        categoryDOM.value = ''
+      else
+        categoryDOM.value = categories
     }
 })
 
@@ -92,6 +110,7 @@ subjectsDOM.addEventListener('click', async (e) => {
 subjectFormDOM.addEventListener('submit', async (e) => {
     e.preventDefault()
     const name = nameDOM.value
+    //const category = categoryDOM.value
   
     try {
       if(subjectFormDOM.className == 'subject-form'){
@@ -106,7 +125,21 @@ subjectFormDOM.addEventListener('submit', async (e) => {
       }
       else if(subjectFormDOM.className == 'updateSubject-form'){
         const name = nameDOM.value
-        const {data: { subject }} = await axios.patch(`/api/v1/subjects/${id}`, {name})
+        let categories = []
+        const num = categoryDOM.value.split(',').length - 1
+        if(num > 0){
+          for (let i = 0;i < num + 1;i++) {
+            categories[i] = categoryDOM.value.split(',')[i]
+          }
+        }
+        else{
+          if(categoryDOM.value == '')
+            categories = []
+          else
+            categories = categoryDOM.value
+        }
+
+        const {data: { subject }} = await axios.patch(`/api/v1/subjects/${id}`, {name, categories})
         showSubjects()
 
         subjectFormAlertDOM.style.display = 'block'
@@ -130,3 +163,32 @@ subjectFormDOM.addEventListener('submit', async (e) => {
       subjectFormAlertDOM.style.display = 'none'
     }, 2000)
 })
+
+const addCategoryElement = () => {
+  parentCat = document.createElement('div')
+  child1Cat = document.createElement('label')
+  child2Cat = document.createElement('input')
+
+  parentCat.className = 'form-group'
+
+  child1Cat.setAttribute('for', 'category')
+  child1Cat.innerHTML = 'Kategorije'
+
+  child2Cat.className = 'form-control category'
+  child2Cat.setAttribute('type', 'text')
+  child2Cat.setAttribute('id', 'category')
+
+  parentCat.appendChild(child1Cat)
+  parentCat.appendChild(child2Cat)
+  parentCat.style.marginTop = '10px'
+
+  nameDOM.parentElement.after(parentCat)
+  categoryDOM = document.getElementById('category')
+  token = 1
+}
+
+const removeCategoryElement = () => {
+  nameDOM.parentNode.parentElement.removeChild(document.getElementById('category').parentElement)
+  categoryDOM = ''
+  token = 0
+}
