@@ -269,8 +269,23 @@ header{
     color: var(--red-dark);
 }
 
+.fullName{
+    background: transparent;
+    border: transparent;
+    cursor: pointer;
+}
+
 .index-color{
+    background: transparent;
+    border: transparent;
+    cursor: pointer;
     color: #2137b5;
+}
+
+.subjectName{
+    background: transparent;
+    border: transparent;
+    cursor: pointer;
 }
 
 .empty-list {

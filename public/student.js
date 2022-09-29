@@ -33,11 +33,11 @@ const showStudents = async () => {
     const allStudents = students.map((student) => {
       const {_id: studentID, firstName, lastName, index} = student
       return `
-      <div class="single-student" data-bs-toggle="modal" data-bs-target="#informationModal">
-        <h5 class="fullName">
+      <div class="single-student">
+        <h5 class="fullName" data-bs-toggle="modal" data-bs-target="#informationModal">
           ${firstName}&nbsp;${lastName}
         </h5>
-        <h5 class="index-color">
+        <h5 class="index-color" data-bs-toggle="modal" data-bs-target="#informationModal">
           ${index}
         </h5>
         <div class="student-links">
@@ -63,7 +63,7 @@ const showStudents = async () => {
 
 showStudents()
 
-//dobavljanje odredjenog studenta/brisanje odredjenog studenta
+//dobavljanje odredjenog studenta/brisanje odredjenog studenta/prikaz informacija o odredjenom studentu
 studentsDOM.addEventListener('click', async (e) => {
   e.preventDefault()
   const element = e.target
@@ -91,22 +91,19 @@ studentsDOM.addEventListener('click', async (e) => {
     }
   }
   else{
-    let tmp = ''
-    if(element.classList.contains('single-student')){
-      tmp = element.lastElementChild.lastElementChild.dataset.id
-    }
-    else if(element.classList.contains('fullName') || element.classList.contains('index-color'))
-      tmp = element.parentElement.lastElementChild.lastElementChild.dataset.id
-    
-    const {data: {student}} = await axios.get(`/api/v1/students/${tmp}`)
-    const {_id: studentID, firstName, lastName, index, subjects} = student
+    if(element.classList.contains('fullName') || element.classList.contains('index-color')){
+      let tmp = element.parentElement.lastElementChild.lastElementChild.dataset.id
 
-    document.getElementById('informationModalLabel').innerHTML = `Informacije o studentu ${firstName} ${lastName}`
-    if(subjects.length == 0)
-      document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} nema predmeta koje slusa.</h5>`
-    else{
-      document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} slusa sledece predmete:</h5>`
-      document.querySelector('.info').innerHTML += '<h4><ul><li>1</li><li>2</li><li>3</li></ul></h4>'
+      const {data: {student}} = await axios.get(`/api/v1/students/${tmp}`)
+      const {_id: studentID, firstName, lastName, index, subjects} = student
+
+      document.getElementById('informationModalLabel').innerHTML = `Informacije o studentu ${firstName} ${lastName}`
+      if(subjects.length == 0)
+        document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} nema predmeta koje slusa.</h5>`
+      else{
+        document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} slusa sledece predmete:</h5>`
+        document.querySelector('.info').innerHTML += '<h4><ul><li>1</li><li>2</li><li>3</li></ul></h4>'
+      }
     }
   }
 })
