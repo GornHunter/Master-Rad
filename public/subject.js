@@ -1,5 +1,6 @@
 const subjectFormDOM = document.querySelector('.subject-form')
 const nameDOM = document.getElementById('name')
+const categoryDOM = document.getElementById('category')
 const subjectFormAlertDOM = document.querySelector('.subjectForm-alert')
 
 const subjectsDOM = document.querySelector('.subjects')
@@ -8,27 +9,20 @@ const subjecth5 = document.getElementById('subjectModalLabel')
 const btnAddSubject = document.getElementById('btnAddSubject')
 
 let subj = []
-let parentCat = ''
-let child1Cat = ''
-let child2Cat = ''
-let token = 0
-let categoryDOM = ''
 
 document.getElementById('aAddSubject').addEventListener('click', () => {
     subjecth5.innerHTML = 'Dodavanje predmeta'
     btnAddSubject.innerHTML = 'Dodaj predmet'
     subjectFormDOM.className = 'subject-form'
     nameDOM.value = ''
-    if(token == 1){
-      removeCategoryElement()
-    }
+    categoryDOM.value = ''
 })
 
 //dobavljanje svih predmeta
 const showSubjects = async () => {
     try{
         const {data: {subjects}} = await axios.get('/api/v1/subjects')
-        //subj = subjects
+        subj = subjects
 
         if(subjects.length < 1){
             subjectsDOM.innerHTML = '<h5 class="empty-list">Lista predmeta je prazna</h5>'
@@ -66,21 +60,6 @@ const showSubjects = async () => {
 
 showSubjects()
 
-//brisanje odredjenog predmeta
-subjectsDOM.addEventListener('click', async (e) => {
-    const element = e.target
-  
-    if (element.parentElement.classList.contains('delete-btn')) {
-      const id = element.parentElement.dataset.id
-      try {
-        await axios.delete(`/api/v1/subjects/${id}`)
-        showSubjects()
-      } catch (error) {
-        console.log(error)
-      }
-    }
-})
-
 //dobavljanje odredjenog predmeta/brisanje odredjenog predmeta/prikaz informacija o odredjenom predmetu
 subjectsDOM.addEventListener('click', async (e) => {
     e.preventDefault()
@@ -91,19 +70,19 @@ subjectsDOM.addEventListener('click', async (e) => {
       subjecth5.innerHTML = 'Azuriranje predmeta'
       btnAddSubject.innerHTML = 'Azuriraj predmet'
 
-      if(token == 0){
-        addCategoryElement()
-      }
-
-      const {data: {subject}} = await axios.get(`/api/v1/subjects/${element.parentElement.dataset.id}`)
-      const {_id: subjectID, name, categories} = subject
+      try{
+        const {data: {subject}} = await axios.get(`/api/v1/subjects/${element.parentElement.dataset.id}`)
+        const {_id: subjectID, name, categories} = subject
   
-      id = subjectID
-      nameDOM.value = name
-      if(categories == undefined)
+        id = subjectID
+        nameDOM.value = name
+        if(categories == undefined)
         categoryDOM.value = ''
-      else
-        categoryDOM.value = categories
+        else
+          categoryDOM.value = categories
+      } catch(error){
+        console.log(error)
+      }
     }
     else if (element.parentElement.classList.contains('delete-btn')) {
       const id = element.parentElement.dataset.id
@@ -118,19 +97,21 @@ subjectsDOM.addEventListener('click', async (e) => {
       if(element.classList.contains('subjectName')){
         const tmp = element.parentElement.lastElementChild.lastElementChild.dataset.id
   
-        const {data: {subject}} = await axios.get(`/api/v1/subjects/${tmp}`)
-        const {_id: subjectID, name, categories} = subject
+        try{
+          const {data: {subject}} = await axios.get(`/api/v1/subjects/${tmp}`)
+          const {_id: subjectID, name, categories} = subject
   
-        document.getElementById('informationModalLabel').innerHTML = `Informacije o predmetu ${name}`
-        if(categories.length == 0)
-          document.querySelector('.info').innerHTML = `<h5>Predmet ${name} trenutno nema nijednu definisanu kategoriju.</h5>`
-        else{
-          document.querySelector('.info').innerHTML = `<h5>Predmet ${name} ima sledece kategorije:</h5>`
-          document.querySelector('.info').innerHTML += '<h4><ul class="categories-list"></ul></h4>'
+          document.getElementById('informationModalLabel').innerHTML = `Informacije o predmetu ${name}`
+          if(categories.length == 0)
+            document.querySelector('.info').innerHTML = `<h5>Predmet ${name} trenutno nema nijednu definisanu kategoriju.</h5>`
+          else{
+            document.querySelector('.info').innerHTML = `<h5>Predmet ${name} ima sledece kategorije:</h5>`
+            document.querySelector('.info').innerHTML += '<h4><ul class="categories-list"></ul></h4>'
 
-          for(let i = 0;i < categories.length;i++){
-            document.querySelector('.categories-list').innerHTML += `<li>${categories[i]}</li>`
+            categories.forEach(item => document.querySelector('.categories-list').innerHTML += `<li>${item}</li>`)
           }
+        } catch(error){
+          console.log(error)
         }
       }
     }
@@ -140,7 +121,6 @@ subjectsDOM.addEventListener('click', async (e) => {
 subjectFormDOM.addEventListener('submit', async (e) => {
     e.preventDefault()
     const name = nameDOM.value
-    //const category = categoryDOM.value
   
     try {
       if(subjectFormDOM.className == 'subject-form'){
@@ -194,7 +174,7 @@ subjectFormDOM.addEventListener('submit', async (e) => {
     }, 2000)
 })
 
-const addCategoryElement = () => {
+/*const addCategoryElement = () => {
   parentCat = document.createElement('div')
   child1Cat = document.createElement('label')
   child2Cat = document.createElement('input')
@@ -218,7 +198,7 @@ const addCategoryElement = () => {
 }
 
 const removeCategoryElement = () => {
-  nameDOM.parentNode.parentElement.removeChild(document.getElementById('category').parentElement)
+  nameDOM.parentElement.parentElement.removeChild(document.getElementById('category').parentElement)
   categoryDOM = ''
   token = 0
-}
+}*/

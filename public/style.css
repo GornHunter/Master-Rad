@@ -45,6 +45,7 @@
     --red-dark: #842029;
     --green-light: #d1e7dd;
     --green-dark: #0f5132;
+    --orange-dark: #cc9112;
   
     /* typography */
     --headingFont: 'Inconsolata', monospace;
@@ -119,29 +120,20 @@ header{
     color: #1dd1a1;
 }
 
-.btns-student{
+.btns-student, .btns-subject, .btns-studentSubject{
     margin-top: 20px;
     text-align: center;
 }
 
-.btns-subject{
-    margin-top: 20px;
-    text-align: center;
-}
-
-.lastName, .index{
+.lastName-div, .index-div, .category-div, .schooldYear-div{
     margin-top: 10px;
 }
 
-.studentForm-alert{
+.studentForm-alert, .subjectForm-alert{
     text-align: center;
 }
 
-.subjectForm-alert{
-    text-align: center;
-}
-
-.studentModal.fade, .subjectModal.fade, .modal-dialog{
+.studentModal.fade, .subjectModal.fade, .informationModal.fade, .studentSubjectModal.fade, .modal-dialog{
     -webkit-transform: translate(0,0);
     transform: translate(0,0);
 }
@@ -189,7 +181,7 @@ header{
     text-align: center;
 }
 
-.students {
+.students, .subjects {
     display: grid;
     gap: 1rem;
     /*dodata 2 atributa*/
@@ -197,15 +189,7 @@ header{
     overflow: auto;
 }
 
-.subjects {
-    display: grid;
-    gap: 1rem;
-    /*dodata 2 atributa*/
-    height: 420px;
-    overflow: auto;
-}
-
-.single-student {
+.single-student, .single-subject {
     padding: 1rem 2.5rem;
     background: var(--white);
     border-radius: var(--borderRadius);
@@ -216,46 +200,21 @@ header{
     align-items: center;
 }
 
-.single-subject {
-    padding: 1rem 2.5rem;
-    background: var(--white);
-    border-radius: var(--borderRadius);
-    box-shadow: var(--shadow-2);
-    transition: var(--transition);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.single-student:hover {
+.single-student:hover, .single-subject:hover {
     box-shadow: var(--shadow-4);
 }
 
-.single-subject:hover {
-    box-shadow: var(--shadow-4);
-}
-
-.single-student h5 {
+.single-student h5, .single-subject h5 {
     margin-bottom: 0;
 }
 
-.single-subject h5 {
-    margin-bottom: 0;
-}
-
-.student-links {
+.student-links, .subject-links {
     display: flex;
     align-items: center;
     gap: 0 0.5rem;
 }
 
-.subject-links {
-    display: flex;
-    align-items: center;
-    gap: 0 0.5rem;
-}
-
-.delete-btn, .edit-link {
+.delete-btn, .edit-link, .studentSubject-link {
     background: transparent;
     border: transparent;
     cursor: pointer;
@@ -263,6 +222,10 @@ header{
 
 .edit-link {
     color: var(--green-dark);
+}
+
+.studentSubject-link {
+    color: var(--orange-dark);
 }
 
 .delete-btn {
@@ -286,8 +249,4 @@ header{
     background: transparent;
     border: transparent;
     cursor: pointer;
-}
-
-.empty-list {
-    text-align: center;
 }

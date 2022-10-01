@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,8 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script defer src="student.js"></script>
-    <script defer src="subject.js"></script>
     <title>Evidencija studenata</title>
 </head>
 <body>
@@ -19,7 +18,6 @@
             <nav class="navigation-menu">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddStudent"><i class="fa-solid fa-user-plus add-student"></i>Dodaj studenta</a>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#subjectModal" id="aAddSubject"><i class="fa-solid fa-file-circle-plus add-subject"></i>Dodaj predmet</a>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddSmth"><i class="fa-solid fa-file-circle-plus add-smth"></i>Dodaj smth</a>
             </nav>
         </div>
     </header>
@@ -48,11 +46,11 @@
                           <label for="firstName">Ime</label>
                           <input type="text" class="form-control firstName" id="firstName">
                         </div>
-                        <div class="form-group lastName">
+                        <div class="form-group lastName-div">
                           <label for="lastName">Prezime</label>
                           <input type="text" class="form-control lastName" id="lastName">
                         </div>
-                        <div class="form-group index">
+                        <div class="form-group index-div">
                             <label for="index">Broj indeksa</label>
                             <input type="text" class="form-control" id="index">
                           </div>
@@ -62,10 +60,6 @@
                         <div class="studentForm-alert"></div>
                     </form>
                 </div>
-                <!--<div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div> -->
             </div>
         </div>
     </div>
@@ -83,6 +77,10 @@
                         <div class="form-group">
                           <label for="name">Ime predmeta</label>
                           <input type="text" class="form-control name" id="name">
+                        </div>
+                        <div class="form-group category-div">
+                            <label for="category">Kategorije</label>
+                            <input type="text" class="form-control category" id="category">
                         </div>
                         <div class="btns-subject">
                             <button type="submit" class="btn btn-primary" id="btnAddSubject"></button>
@@ -107,5 +105,36 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal za dodeljivanje predmeta studentu -->
+    <div class="modal fade zoom-in" id="studentSubjectModal" tabindex="-1" role="dialog" aria-labelledby="studentSubjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="studentSubjectModalLabel">Dodeljivanje predmeta studentu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="studentSubject-form">
+                        <div class="form-group">
+                          <label for="wholeName">Ime i prezime studenta</label>
+                          <label class="form-control wholeName" id="wholeName"></label>
+                        </div>
+                        <div class="form-group schooldYear-div">
+                            <label for="schoolYear">Skolska godina</label>
+                            <input class="form-control schoolYear" id="schoolYear">
+                          </div>
+                        <div class="btns-studentSubject">
+                            <button type="submit" class="btn btn-primary" id="btnStudentSubject">Dodeli predmete studentu</button>
+                        </div>
+                        <div class="studentSubjectForm-alert"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="student.js"></script>
+    <script src="subject.js"></script>
 </body>
 </html>
