@@ -100,11 +100,20 @@ studentsDOM.addEventListener('click', async (e) => {
     }
   }
   else if(element.parentElement.classList.contains('studentSubject-link')){
-    const id = element.parentElement.dataset.id
     try {
-      //console.log(subj)
-      const s = element.parentElement.parentElement.parentElement.firstElementChild.innerHTML.replace('&nbsp;', ' ').trim()
-      document.getElementById('wholeName').innerHTML = s
+      document.getElementById('schoolYear').value = ''
+      const {data: {student}} = await axios.get(`/api/v1/students/${element.parentElement.dataset.id}`)
+      const {_id: studentID, firstName, lastName} = student
+      document.getElementById('wholeName').innerHTML = `${firstName} ${lastName}`
+      id = studentID
+
+      let items = []
+      let tmp = 1
+      items.push(`<option value="" selected></option>`)
+      subj.forEach(item => {
+          items.push(`<option value="${item._id}">${item.name}</option>`)
+      })
+      document.getElementById('subj').innerHTML = items
     } catch (error) {
       console.log(error)
     }
@@ -115,15 +124,27 @@ studentsDOM.addEventListener('click', async (e) => {
 
       try{
         const {data: {student}} = await axios.get(`/api/v1/students/${tmp}`)
-        const {_id: studentID, firstName, lastName, index, subjects} = student
+        const {_id: studentID, firstName, lastName, index} = student
+
+        const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${tmp}`)
+        const {subject_id, school_year} = studentSubject
+
+        //const {data: {subject}} = await axios.get(`/api/v1/subjects/${subject_id}`)
+        //const {name} = subject
+
 
         document.getElementById('informationModalLabel').innerHTML = `Informacije o studentu ${firstName} ${lastName}`
         //ovde treba popraviti proveru kad se uradi funkcionalnost za dodeljivanje predmeta studentima
-        if(subjects.length == 0)
+        //if(subjects.length == 0)
+
+        if(studentSubject.length == 0)
           document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} nema predmeta koje slusa.</h5>`
         else{
           document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} slusa sledece predmete:</h5>`
-          document.querySelector('.info').innerHTML += '<h4><ul><li>1</li><li>2</li><li>3</li></ul></h4>'
+          for(let i = 0;i < studentSubject.length;i++){
+            const {data: {subject}} = await axios.get(`/api/v1/subjects/${studentSubject[i].subject_id}`)
+            document.querySelector('.info').innerHTML += `<h4><ul><li>${subject.name}&nbsp;(${studentSubject[i].school_year})</li></h4>`
+          }
         }
       } catch(error){
         console.log(error)
@@ -192,4 +213,41 @@ studentFormDOM.addEventListener('submit', async (e) => {
     setTimeout(() => {
       studentFormAlertDOM.style.display = 'none'
     }, 2000)
+})
+
+//funkcionalnost dodeljivanja predmeta studentu
+document.querySelector('.studentSubject-form').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const student_id = id
+  const subject_id = document.getElementById('subj').options[document.getElementById('subj').selectedIndex].value
+  const school_year = document.getElementById('schoolYear').value
+
+  try{
+    await axios.post('/api/v1/studentSubjects', { student_id, subject_id, school_year })
+
+    document.querySelector('.studentSubjectForm-alert').style.display = 'block'
+    document.querySelector('.studentSubjectForm-alert').textContent = 'Predmet uspesno dodeljen studentu'
+    document.querySelector('.studentSubjectForm-alert').classList.remove('text-danger')
+    document.querySelector('.studentSubjectForm-alert').classList.add('text-success')
+  }catch(error){
+    document.querySelector('.studentSubjectForm-alert').style.display = 'block'
+    document.querySelector('.studentSubjectForm-alert').innerHTML = ''
+
+    if(subject_id == '')
+      document.querySelector('.studentSubjectForm-alert').innerHTML += error.response.data.msg.errors.subject_id.message + "<br />"
+    
+    if(school_year == '')
+      document.querySelector('.studentSubjectForm-alert').innerHTML += error.response.data.msg.errors.school_year.message
+    
+    if(school_year != '' && error.response.data.msg.errors.school_year != undefined){
+      document.querySelector('.studentSubjectForm-alert').innerHTML += error.response.data.msg.errors.school_year.message
+    }
+
+    document.querySelector('.studentSubjectForm-alert').classList.remove('text-success')
+    document.querySelector('.studentSubjectForm-alert').classList.add('text-danger')
+  }
+
+  setTimeout(() => {
+    document.querySelector('.studentSubjectForm-alert').style.display = 'none'
+  }, 2000)
 })

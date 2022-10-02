@@ -2,9 +2,9 @@ const express = require('express')
 const app = express()
 const students = require('./routes/students')
 const subjects = require('./routes/subjects')
+const studentSubjects = require('./routes/studentSubjects')
 const categories = require('./routes/categories')
 const connectDB = require('./db/connect')
-const Category = require('./models/Category')
 require('dotenv').config()
 
 
@@ -15,6 +15,7 @@ app.use(express.json())
 //routes
 app.use('/api/v1/students', students)
 app.use('/api/v1/subjects', subjects)
+app.use('/api/v1/studentSubjects', studentSubjects)
 app.use('/api/v1/categories', categories)
 
 //Port

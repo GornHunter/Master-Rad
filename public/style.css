@@ -125,11 +125,11 @@ header{
     text-align: center;
 }
 
-.lastName-div, .index-div, .category-div, .schooldYear-div{
+.lastName-div, .index-div, .category-div, .schooldYear-div, .subj-div{
     margin-top: 10px;
 }
 
-.studentForm-alert, .subjectForm-alert{
+.studentForm-alert, .subjectForm-alert, .studentSubjectForm-alert{
     text-align: center;
 }
 
