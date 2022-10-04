@@ -101,18 +101,36 @@ studentsDOM.addEventListener('click', async (e) => {
   }
   else if(element.parentElement.classList.contains('studentSubject-link')){
     try {
-      document.getElementById('schoolYear').value = ''
       const {data: {student}} = await axios.get(`/api/v1/students/${element.parentElement.dataset.id}`)
       const {_id: studentID, firstName, lastName} = student
       document.getElementById('wholeName').innerHTML = `${firstName} ${lastName}`
       id = studentID
 
+      const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}`)
+
+      const {data: {subjects}} = await axios.get(`/api/v1/subjects`)
       let items = []
-      let tmp = 1
       items.push(`<option value="" selected></option>`)
-      subj.forEach(item => {
-          items.push(`<option value="${item._id}">${item.name}</option>`)
-      })
+      
+      if(studentSubject.length != 0){
+        for(let i = 0;i < studentSubject.length;i++){
+          for(let j = 0;j < subjects.length;j++){
+            if(subjects[j]._id !== '0'){
+              if(subjects[j]._id === studentSubject[i].subject_id){
+                subjects[j]._id = '0'
+              }
+            }
+          }
+        }
+      }
+
+      for(let i = 0;i < subjects.length;i++){
+        if(subjects[i]._id !== '0')
+          items.push(`<option value="${subjects[i]._id}">${subjects[i].name}</option>`)
+        else
+          items.push(`<option value="${subjects[i]._id}" disabled>${subjects[i].name}</option>`)
+      }
+
       document.getElementById('subj').innerHTML = items
     } catch (error) {
       console.log(error)
@@ -127,16 +145,10 @@ studentsDOM.addEventListener('click', async (e) => {
         const {_id: studentID, firstName, lastName, index} = student
 
         const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${tmp}`)
-        const {subject_id, school_year} = studentSubject
-
-        //const {data: {subject}} = await axios.get(`/api/v1/subjects/${subject_id}`)
-        //const {name} = subject
-
 
         document.getElementById('informationModalLabel').innerHTML = `Informacije o studentu ${firstName} ${lastName}`
-        //ovde treba popraviti proveru kad se uradi funkcionalnost za dodeljivanje predmeta studentima
-        //if(subjects.length == 0)
 
+        //ovde treba popraviti proveru kad se uradi funkcionalnost za dodeljivanje predmeta studentim(popravljeno za sada 2.10.2022.)
         if(studentSubject.length == 0)
           document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} nema predmeta koje slusa.</h5>`
         else{
@@ -174,9 +186,6 @@ studentFormDOM.addEventListener('submit', async (e) => {
         studentFormAlertDOM.classList.add('text-success')
       }
       else if(studentFormDOM.className == 'updateStudent-form'){
-        const firstName = firstNameDOM.value
-        const lastName = lastNameDOM.value
-        const index = indexDOM.value
         const {data: { student }} = await axios.patch(`/api/v1/students/${id}`, {
           firstName,
           lastName,
@@ -229,6 +238,15 @@ document.querySelector('.studentSubject-form').addEventListener('submit', async 
     document.querySelector('.studentSubjectForm-alert').textContent = 'Predmet uspesno dodeljen studentu'
     document.querySelector('.studentSubjectForm-alert').classList.remove('text-danger')
     document.querySelector('.studentSubjectForm-alert').classList.add('text-success')
+    
+    //console.log(document.getElementById('subj').options[document.getElementById('subj').selectedIndex])
+    //console.log('')
+
+    document.getElementById('schoolYear').value = ''
+    //document.getElementById('subj').remove(document.getElementById('subj').selectedIndex)
+    document.getElementById('subj').options[document.getElementById('subj').selectedIndex].disabled = true
+    document.getElementById('subj').options[document.getElementById('subj').selectedIndex].selected = false
+    document.getElementById('subj').options[0].selected = true
   }catch(error){
     document.querySelector('.studentSubjectForm-alert').style.display = 'block'
     document.querySelector('.studentSubjectForm-alert').innerHTML = ''

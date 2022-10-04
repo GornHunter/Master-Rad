@@ -8,8 +8,6 @@ const subjectsDOM = document.querySelector('.subjects')
 const subjecth5 = document.getElementById('subjectModalLabel')
 const btnAddSubject = document.getElementById('btnAddSubject')
 
-let subj = []
-
 document.getElementById('aAddSubject').addEventListener('click', () => {
     subjecth5.innerHTML = 'Dodavanje predmeta'
     btnAddSubject.innerHTML = 'Dodaj predmet'
@@ -22,7 +20,6 @@ document.getElementById('aAddSubject').addEventListener('click', () => {
 const showSubjects = async () => {
     try{
         const {data: {subjects}} = await axios.get('/api/v1/subjects')
-        subj = subjects
 
         if(subjects.length < 1){
             subjectsDOM.innerHTML = '<h5 class="empty-list">Lista predmeta je prazna</h5>'
@@ -77,7 +74,7 @@ subjectsDOM.addEventListener('click', async (e) => {
         id = subjectID
         nameDOM.value = name
         if(categories == undefined)
-        categoryDOM.value = ''
+          categoryDOM.value = ''
         else
           categoryDOM.value = categories
       } catch(error){
@@ -121,12 +118,26 @@ subjectsDOM.addEventListener('click', async (e) => {
 subjectFormDOM.addEventListener('submit', async (e) => {
     e.preventDefault()
     const name = nameDOM.value
+    let categories = []
+    const num = categoryDOM.value.split(',').length - 1
+    if(num > 0){
+      for (let i = 0;i < num + 1;i++) {
+        categories[i] = categoryDOM.value.split(',')[i]
+      }
+    }
+    else{
+      if(categoryDOM.value == '')
+        categories = []
+      else
+        categories = categoryDOM.value
+    }
   
     try {
       if(subjectFormDOM.className == 'subject-form'){
-        await axios.post('/api/v1/subjects', { name })
+        await axios.post('/api/v1/subjects', { name, categories })
         showSubjects()
         nameDOM.value = ''
+        categoryDOM.value = ''
 
         subjectFormAlertDOM.style.display = 'block'
         subjectFormAlertDOM.textContent = 'Predmet uspesno dodat'
@@ -134,8 +145,7 @@ subjectFormDOM.addEventListener('submit', async (e) => {
         subjectFormAlertDOM.classList.add('text-success')
       }
       else if(subjectFormDOM.className == 'updateSubject-form'){
-        const name = nameDOM.value
-        let categories = []
+        /*let categories = []
         const num = categoryDOM.value.split(',').length - 1
         if(num > 0){
           for (let i = 0;i < num + 1;i++) {
@@ -147,7 +157,7 @@ subjectFormDOM.addEventListener('submit', async (e) => {
             categories = []
           else
             categories = categoryDOM.value
-        }
+        }*/
 
         const {data: { subject }} = await axios.patch(`/api/v1/subjects/${id}`, {name, categories})
         showSubjects()
