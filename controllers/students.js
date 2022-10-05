@@ -1,5 +1,4 @@
 const Student = require('../models/Student')
-//const Subject = require('../models/Subject')
 
 const getAllStudents = async (req, res) => {
     try{

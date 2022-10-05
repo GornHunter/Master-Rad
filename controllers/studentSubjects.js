@@ -53,8 +53,18 @@ const updateStudentSubject = async (req, res) => {
 
 const deleteStudentSubject = async (req, res) => {
     try{
-        const {id:studentID} = req.params
-        const studentSubject = await StudentSubject.deleteMany({student_id:studentID})
+        const {id:ids} = req.params
+        
+        const studentID = ids.split('&')[0]
+        const subjectID = ids.split('&')[1]
+
+        let studentSubject = ''
+        if(studentID == '' && subjectID != '')
+            studentSubject = await StudentSubject.deleteMany({subject_id:subjectID})
+        else if(studentID != '' && subjectID == '')
+            studentSubject = await StudentSubject.deleteMany({student_id:studentID})
+        else
+            studentSubject = await StudentSubject.findOneAndDelete({student_id:studentID, subject_id:subjectID})
 
         if(!studentSubject){
             return res.status(404).json({msg: `No studentSubject with id: ${subjectID}`})

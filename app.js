@@ -16,7 +16,6 @@ app.use(express.json())
 app.use('/api/v1/students', students)
 app.use('/api/v1/subjects', subjects)
 app.use('/api/v1/studentSubjects', studentSubjects)
-app.use('/api/v1/categories', categories)
 
 //Port
 const port = 3000

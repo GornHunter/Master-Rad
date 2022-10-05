@@ -11,7 +11,7 @@ const btnAddSubject = document.getElementById('btnAddSubject')
 document.getElementById('aAddSubject').addEventListener('click', () => {
     subjecth5.innerHTML = 'Dodavanje predmeta'
     btnAddSubject.innerHTML = 'Dodaj predmet'
-    subjectFormDOM.className = 'subject-form'
+    document.getElementById('sub-form').className = 'subject-form'
     nameDOM.value = ''
     categoryDOM.value = ''
 })
@@ -63,7 +63,7 @@ subjectsDOM.addEventListener('click', async (e) => {
     const element = e.target
   
     if (element.parentElement.classList.contains('edit-link')) {
-      subjectFormDOM.className = 'updateSubject-form'
+      document.getElementById('sub-form').className = 'updateSubject-form'
       subjecth5.innerHTML = 'Azuriranje predmeta'
       btnAddSubject.innerHTML = 'Azuriraj predmet'
 
@@ -82,8 +82,9 @@ subjectsDOM.addEventListener('click', async (e) => {
       }
     }
     else if (element.parentElement.classList.contains('delete-btn')) {
-      const id = element.parentElement.dataset.id
+      id = element.parentElement.dataset.id
       try {
+        await axios.delete(`/api/v1/studentSubjects/&${id}`)
         await axios.delete(`/api/v1/subjects/${id}`)
         showSubjects()
       } catch (error) {
@@ -133,7 +134,7 @@ subjectFormDOM.addEventListener('submit', async (e) => {
     }
   
     try {
-      if(subjectFormDOM.className == 'subject-form'){
+      if(document.getElementById('sub-form').className == 'subject-form'){
         await axios.post('/api/v1/subjects', { name, categories })
         showSubjects()
         nameDOM.value = ''
@@ -144,7 +145,7 @@ subjectFormDOM.addEventListener('submit', async (e) => {
         subjectFormAlertDOM.classList.remove('text-danger')
         subjectFormAlertDOM.classList.add('text-success')
       }
-      else if(subjectFormDOM.className == 'updateSubject-form'){
+      else if(document.getElementById('sub-form').className == 'updateSubject-form'){
         /*let categories = []
         const num = categoryDOM.value.split(',').length - 1
         if(num > 0){

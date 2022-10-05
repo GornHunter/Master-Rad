@@ -125,7 +125,7 @@ header{
     text-align: center;
 }
 
-.lastName-div, .index-div, .category-div, .schooldYear-div, .subj-div{
+.lastName-div, .index-div, .category-div, .schoolYear-div, .subj-div{
     margin-top: 10px;
 }
 
@@ -214,7 +214,7 @@ header{
     gap: 0 0.5rem;
 }
 
-.delete-btn, .edit-link, .studentSubject-link {
+.delete-btn, .edit-link, .studentSubject-link, .studentSubjectDelete-link {
     background: transparent;
     border: transparent;
     cursor: pointer;
@@ -225,11 +225,15 @@ header{
 }
 
 .studentSubject-link {
-    color: var(--orange-dark);
+    color: #1485db;
+}
+
+.studentSubjectDelete-link {
+    color: #a31a1f;
 }
 
 .delete-btn {
-    color: var(--red-dark);
+    color: #a31a1f;
 }
 
 .fullName{
@@ -249,4 +253,9 @@ header{
     background: transparent;
     border: transparent;
     cursor: pointer;
+}
+
+.info {
+    max-height: 400px;
+    overflow: auto;
 }
