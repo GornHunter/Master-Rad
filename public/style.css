@@ -112,6 +112,10 @@ header{
     font-size: 16px;
 }
 
+.navigation-menu button {
+    margin-left: 10px;
+}
+
 .add-student{
     color: #3523cc;
 }
@@ -120,16 +124,16 @@ header{
     color: #1dd1a1;
 }
 
-.btns-student, .btns-subject, .btns-studentSubject{
+.btns-student, .btns-subject, .btns-studentSubject, .btns-studentSubjectPoints{
     margin-top: 20px;
     text-align: center;
 }
 
-.lastName-div, .index-div, .category-div, .schoolYear-div, .subj-div{
+.lastName-div, .index-div, .category-div, .schoolYear-div, .subj-div, .subjPoints-div, .points{
     margin-top: 10px;
 }
 
-.studentForm-alert, .subjectForm-alert, .studentSubjectForm-alert{
+.studentForm-alert, .subjectForm-alert, .studentSubjectForm-alert, .studentSubjectPointsForm-alert{
     text-align: center;
 }
 
@@ -228,6 +232,10 @@ header{
     color: #1485db;
 }
 
+.studentSubjectPoints-link {
+    color: #0cab36;
+}
+
 .studentSubjectDelete-link {
     color: #a31a1f;
 }
@@ -255,7 +263,7 @@ header{
     cursor: pointer;
 }
 
-.info {
+.info{
     max-height: 400px;
     overflow: auto;
 }

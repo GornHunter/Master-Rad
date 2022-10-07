@@ -121,10 +121,10 @@ subjectFormDOM.addEventListener('submit', async (e) => {
     const name = nameDOM.value
     let categories = []
     const num = categoryDOM.value.split(',').length - 1
+    console.log(`Kategorije num: `, num)
     if(num > 0){
-      for (let i = 0;i < num + 1;i++) {
+      for (let i = 0;i < num + 1;i++)
         categories[i] = categoryDOM.value.split(',')[i]
-      }
     }
     else{
       if(categoryDOM.value == '')
@@ -137,6 +137,7 @@ subjectFormDOM.addEventListener('submit', async (e) => {
       if(document.getElementById('sub-form').className == 'subject-form'){
         await axios.post('/api/v1/subjects', { name, categories })
         showSubjects()
+
         nameDOM.value = ''
         categoryDOM.value = ''
 
@@ -171,7 +172,6 @@ subjectFormDOM.addEventListener('submit', async (e) => {
     } catch (error) {
       subjectFormAlertDOM.style.display = 'block'
       subjectFormAlertDOM.innerHTML = ''
-
 
       if(name == '')
         subjectFormAlertDOM.innerHTML += error.response.data.msg.errors.name.message + "<br />"

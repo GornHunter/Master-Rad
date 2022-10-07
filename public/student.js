@@ -10,8 +10,23 @@ const studenth5 = document.getElementById('studentModalLabel')
 const btnAddStudent = document.getElementById('btnAddStudent')
 
 const studentSubjectFormDOM = document.querySelector('.studentSubject-form')
+const studentSubjectPointsFormDOM = document.querySelector('.studentSubjectPoints-form')
 
 let id = ''
+
+document.querySelector('.load').addEventListener('click', async () => {
+  try{
+    const {data: {students}} = await axios.get('students.json')
+
+    for(let i = 0;i < students.length;i++){
+      await axios.post('/api/v1/students', { firstName: students[i].firstName, lastName: students[i].lastName, index: students[i].index})
+    }
+
+    showStudents()
+  } catch(error){
+    console.log(error)
+  }
+})
 
 document.getElementById('aAddStudent').addEventListener('click', (e) => {
   studenth5.innerHTML = 'Dodavanje studenta'
@@ -52,6 +67,11 @@ const showStudents = async () => {
           <!-- studentSubjectAdd link -->
           <a href="#" class="studentSubject-link" title="Dodeli predmete studentu" data-bs-toggle="modal" data-bs-target="#studentSubjectModal" data-id="${studentID}">
             <i class="fa-solid fa-file-circle-plus"></i>
+          </a>
+
+          <!-- studentSubjectPoints link -->
+          <a href="#" class="studentSubjectPoints-link" title="Unesi poene" data-bs-toggle="modal" data-bs-target="#studentSubjectPointsModal" data-id="${studentID}">
+            <i class="fa-solid fa-plus"></i>
           </a>
 
           <!-- studentSubjectDelete link -->
@@ -122,7 +142,7 @@ studentsDOM.addEventListener('click', async (e) => {
       document.getElementById('wholeName').innerHTML = `${firstName} ${lastName}`
       id = studentID
 
-      const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}`)
+      const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}&`)
 
       const {data: {subjects}} = await axios.get(`/api/v1/subjects`)
       let items = []
@@ -152,6 +172,26 @@ studentsDOM.addEventListener('click', async (e) => {
       console.log(error)
     }
   }
+  else if(element.parentElement.classList.contains('studentSubjectPoints-link')){
+    document.getElementById('c').value = ''
+    document.getElementById('p').value = ''
+
+    const {data: {student}} = await axios.get(`/api/v1/students/${element.parentElement.dataset.id}`)
+    const {_id: studentID, firstName, lastName} = student
+    document.getElementById('wholeNamePoints').innerHTML = `${firstName} ${lastName}`
+    id = studentID
+
+    const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}&`)
+    let items = []
+    items.push(`<option value="" onclick="showPoints()" selected></option>`)
+
+    for(let i = 0;i < studentSubject.length;i++){
+      const {data: {subject}} = await axios.get(`/api/v1/subjects/${studentSubject[i].subject_id}`)
+      items.push(`<option value="${subject._id}" onclick="showPoints()">${subject.name}</option>`)
+    }
+
+    document.getElementById('subjPoints').innerHTML = items
+  }
   else if(element.parentElement.classList.contains('studentSubjectDelete-link')){
     try{
       if(document.querySelector('.schoolYear-div') != null)
@@ -167,7 +207,7 @@ studentsDOM.addEventListener('click', async (e) => {
       document.getElementById('wholeName').innerHTML = `${firstName} ${lastName}`
       id = studentID
   
-      const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}`)
+      const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}&`)
       let items = []
 
       for(let i = 0;i < studentSubject.length;i++){
@@ -191,9 +231,10 @@ studentsDOM.addEventListener('click', async (e) => {
         const {data: {student}} = await axios.get(`/api/v1/students/${tmp}`)
         const {_id: studentID, firstName, lastName, index} = student
 
-        const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${tmp}`)
+        const {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${tmp}&`)
 
         document.getElementById('informationModalLabel').innerHTML = `Informacije o studentu ${firstName} ${lastName}`
+        let sum = 0
 
         //ovde treba popraviti proveru kad se uradi funkcionalnost za dodeljivanje predmeta studentim(azurirano 4.10.2022.)
         if(studentSubject.length == 0)
@@ -201,11 +242,15 @@ studentsDOM.addEventListener('click', async (e) => {
         else{
           document.querySelector('.info').innerHTML = `<h5>Student ${firstName} ${lastName} sa brojem indeksa ${index} slusa sledece predmete:</h5>`
           for(let i = 0;i < studentSubject.length;i++){
+            sum = 0
             const {data: {subject}} = await axios.get(`/api/v1/subjects/${studentSubject[i].subject_id}`)
             document.querySelector('.info').innerHTML += `<h4><ul><li><strong>${subject.name}</strong>&nbsp;(${studentSubject[i].school_year})</li><ul id="cat${subject._id}"></ul></ul></h4>`
             for(let j = 0;j < subject.categories.length;j++){
-              document.getElementById(`cat${subject._id}`).innerHTML += `<h5><ul><li>${subject.categories[j]}</li></ul></h5>`
+              let tmp1 = studentSubject[i].points[j] === undefined ? 0 : studentSubject[i].points[j]
+              sum += Number(tmp1)
+              document.getElementById(`cat${subject._id}`).innerHTML += `<h5><ul><li>${subject.categories[j]} - &nbsp;<strong>${tmp1}</strong> poen/a</li></ul></h5>`
             }
+            document.querySelector('.info').innerHTML += `<h5>Ukupan broj poena - <strong>${sum}</strong></h5>`
           }
         }
       } catch(error){
@@ -329,6 +374,100 @@ studentSubjectFormDOM.addEventListener('submit', async (e) => {
     document.querySelector('.studentSubjectForm-alert').style.display = 'none'
   }, 2000)
 })
+
+studentSubjectPointsFormDOM.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const student_id = id
+  const subject_id = document.getElementById('subjPoints').options[document.getElementById('subjPoints').selectedIndex].value
+  const pointsStr = document.getElementById('p').value
+  const num = pointsStr.split(',').length - 1
+  let points = []
+
+  try{
+    if(num > 0){
+      for(let i = 0;i < num + 1;i++)
+        points.push(Number(pointsStr.split(',')[i]))
+    }
+    else{
+      if(pointsStr == '')
+        points = []
+      else
+      points = Number(pointsStr)
+    }
+
+    if(subject_id == ''){
+      document.querySelector('.studentSubjectPointsForm-alert').style.display = 'block'
+      document.querySelector('.studentSubjectPointsForm-alert').innerHTML = ''
+
+      document.querySelector('.studentSubjectPointsForm-alert').innerHTML += 'Predmet mora biti odabran'
+
+      document.querySelector('.studentSubjectPointsForm-alert').classList.remove('text-success')
+      document.querySelector('.studentSubjectPointsForm-alert').classList.add('text-danger')
+
+      setTimeout(() => {
+        document.querySelector('.studentSubjectPointsForm-alert').style.display = 'none'
+      }, 2000)
+
+      return
+    }
+
+    const {data: { studentSubject }} = await axios.patch(`/api/v1/studentSubjects/${student_id}&${subject_id}`, {
+      points
+    })
+
+    document.querySelector('.studentSubjectPointsForm-alert').style.display = 'block'
+    document.querySelector('.studentSubjectPointsForm-alert').textContent = 'Uspesno uneti poeni'
+    document.querySelector('.studentSubjectPointsForm-alert').classList.remove('text-danger')
+    document.querySelector('.studentSubjectPointsForm-alert').classList.add('text-success')
+  } catch(error){
+    document.querySelector('.studentSubjectPointsForm-alert').style.display = 'block'
+    document.querySelector('.studentSubjectPointsForm-alert').innerHTML = ''
+
+    if(subject_id == '')
+      document.querySelector('.studentSubjectPointsForm-alert').innerHTML += error.response.data.msg.errors.subject_id.message + "<br />"
+
+    document.querySelector('.studentSubjectPointsForm-alert').classList.remove('text-success')
+    document.querySelector('.studentSubjectPointsForm-alert').classList.add('text-danger')
+  }
+
+  setTimeout(() => {
+    document.querySelector('.studentSubjectPointsForm-alert').style.display = 'none'
+  }, 2000)
+})
+
+const showPoints = async () => {
+  let s = ''
+  let ss = ''
+  if(document.getElementById('subjPoints').options[document.getElementById('subjPoints').selectedIndex].value !== ''){
+    let {data: {subject}} = await axios.get(`/api/v1/subjects/${document.getElementById('subjPoints').options[document.getElementById('subjPoints').selectedIndex].value}`)
+    let {data: {studentSubject}} = await axios.get(`/api/v1/studentSubjects/${id}&${document.getElementById('subjPoints').options[document.getElementById('subjPoints').selectedIndex].value}`)
+    s = subject
+    ss = studentSubject[0]
+  }
+
+  let categories = ''
+  let points = ''
+  let c = ''
+  let p = ''
+  if(document.getElementById('subjPoints').options[document.getElementById('subjPoints').selectedIndex].value !== ''){
+    if(s.categories.length != 0){
+      for(let i = 0;i < s.categories.length;i++){
+        categories += `${s.categories[i]},`
+      }
+      c = categories.slice(0, -1)
+    }
+
+    if(ss.points.length != 0){
+      for(let i = 0;i < ss.points.length;i++){
+        points += `${ss.points[i]},`
+      }
+      p = points.slice(0, -1)
+    }
+  }
+  
+  document.querySelector('.c').value = c
+  document.querySelector('.p').value = p
+}
 
 const addElement = () => {
   parent = document.createElement('div')

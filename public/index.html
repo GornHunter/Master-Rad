@@ -18,6 +18,7 @@
             <nav class="navigation-menu">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#studentModal" id="aAddStudent"><i class="fa-solid fa-user-plus add-student"></i>Dodaj studenta</a>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#subjectModal" id="aAddSubject"><i class="fa-solid fa-file-circle-plus add-subject"></i>Dodaj predmet</a>
+                <button type="button" class="btn btn-success load">Ucitaj studente</button>
             </nav>
         </div>
     </header>
@@ -137,6 +138,43 @@
                             <button type="submit" class="btn btn-primary" id="btnStudentSubject">Dodeli predmete studentu</button>
                         </div>
                         <div class="studentSubjectForm-alert"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal za unos poena -->
+    <div class="modal fade zoom-in" id="studentSubjectPointsModal" tabindex="-1" role="dialog" aria-labelledby="studentSubjectPointsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="studentSubjectPointsModalLabel">Unos poena za studenta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body points-main">
+                    <form class="studentSubjectPoints-form">
+                        <div class="form-group">
+                            <label for="wholeNamePoints">Ime i prezime studenta</label>
+                            <label class="form-control wholeNamePoints" id="wholeNamePoints"></label>
+                        </div>
+                        <div class="form-group subjPoints-div">
+                            <label for="subjPoints">Izaberite predmet za unos poena</label>
+                            <br/>
+                            <select class="form-select" name="subjPoints" id="subjPoints" multiple>
+                                
+                            </select>
+                        </div>
+                        <div class="form-group points">
+                            <label for="c">Kategorije</label>
+                            <input type="text" class="form-control c" id="c" readonly>
+                            <label for="p" style="margin-top: 10px;">Unos poena</label>
+                            <input type="text" class="form-control p" id="p">
+                        </div>
+                        <div class="btns-studentSubjectPoints">
+                            <button type="submit" class="btn btn-primary" id="btnStudentSubjectPoints">Unesi poene</button>
+                        </div>
+                        <div class="studentSubjectPointsForm-alert"></div>
                     </form>
                 </div>
             </div>

@@ -1,0 +1,44 @@
+{
+    "students":[
+        {
+            "firstName": "Itan",
+            "lastName": "Islamovic",
+            "index": "E1 1-2020"
+        },
+        {
+            "firstName": "Aleksa",
+            "lastName": "Citic",
+            "index": "E1 2-2020"
+        },
+        {
+            "firstName": "Kosta",
+            "lastName": "Mitrovic",
+            "index": "E1 3-2020"
+        },
+        {
+            "firstName": "Andrej",
+            "lastName": "Kurlagic",
+            "index": "E1 4-2020"
+        },
+        {
+            "firstName": "Nemanja",
+            "lastName": "Vidic",
+            "index": "E1 5-2020"
+        },
+        {
+            "firstName": "Nikola",
+            "lastName": "Budic",
+            "index": "E1 6-2020"
+        },
+        {
+            "firstName": "Srdjan",
+            "lastName": "Palic",
+            "index": "E1 7-2020"
+        },
+        {
+            "firstName": "Dragan",
+            "lastName": "Spasic",
+            "index": "E1 8-2020"
+        }
+    ]
+}

@@ -20,8 +20,21 @@ const createStudentSubject = async (req, res) => {
 
 const getStudentSubject = async (req, res) => {
     try{
-        const {id:studentID} = req.params
-        const studentSubject = await StudentSubject.find({student_id: studentID})
+        //const {id:studentID} = req.params
+        const {id:ids} = req.params
+        
+        const studentID = ids.split('&')[0]
+        const subjectID = ids.split('&')[1]
+
+        let studentSubject = ''
+        if(studentID == '' && subjectID != '')
+            studentSubject = await StudentSubject.find({subject_id:subjectID})
+        else if(studentID != '' && subjectID == '')
+            studentSubject = await StudentSubject.find({student_id:studentID})
+        else
+            studentSubject = await StudentSubject.find({student_id:studentID, subject_id:subjectID})
+
+        //const studentSubject = await StudentSubject.find({student_id: studentID})
         
         if(!studentSubject){
             return res.status(404).json({msg: `No studentSubject with id: ${studentID}`})
@@ -35,11 +48,33 @@ const getStudentSubject = async (req, res) => {
 
 const updateStudentSubject = async (req, res) => {
     try{
-        const {id:studentID} = req.params
-        const studentSubject = await StudentSubject.findOneAndUpdate({student_id:studentID}, req.body, {
+        //const {id:studentID} = req.params
+        const {id:ids} = req.params
+        
+        const studentID = ids.split('&')[0]
+        const subjectID = ids.split('&')[1]
+
+        let studentSubject = ''
+        if(studentID == '' && subjectID != '')
+            studentSubject = await StudentSubject.findOneAndUpdate({subject_id:subjectID}, req.body, {
+                new: true, 
+                runValidators: true
+            })
+        else if(studentID != '' && subjectID == '')
+            studentSubject = await StudentSubject.findOneAndUpdate({student_id:studentID}, req.body, {
+                new: true, 
+                runValidators: true
+            })
+        else
+            studentSubject = await StudentSubject.findOneAndUpdate({student_id:studentID, subject_id:subjectID}, req.body, {
+                new: true, 
+                runValidators: true
+            })
+        
+        /*const studentSubject = await StudentSubject.findOneAndUpdate({student_id:studentID}, req.body, {
             new: true, 
             runValidators: true
-        })
+        })*/
 
         if(!studentSubject){
             return res.status(404).json({msg: `No studentSubject with id: ${subjectID}`})
