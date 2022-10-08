@@ -147,20 +147,6 @@ subjectFormDOM.addEventListener('submit', async (e) => {
         subjectFormAlertDOM.classList.add('text-success')
       }
       else if(document.getElementById('sub-form').className == 'updateSubject-form'){
-        /*let categories = []
-        const num = categoryDOM.value.split(',').length - 1
-        if(num > 0){
-          for (let i = 0;i < num + 1;i++) {
-            categories[i] = categoryDOM.value.split(',')[i]
-          }
-        }
-        else{
-          if(categoryDOM.value == '')
-            categories = []
-          else
-            categories = categoryDOM.value
-        }*/
-
         const {data: { subject }} = await axios.patch(`/api/v1/subjects/${id}`, {name, categories})
         showSubjects()
 
@@ -184,32 +170,3 @@ subjectFormDOM.addEventListener('submit', async (e) => {
       subjectFormAlertDOM.style.display = 'none'
     }, 2000)
 })
-
-/*const addCategoryElement = () => {
-  parentCat = document.createElement('div')
-  child1Cat = document.createElement('label')
-  child2Cat = document.createElement('input')
-
-  parentCat.className = 'form-group'
-
-  child1Cat.setAttribute('for', 'category')
-  child1Cat.innerHTML = 'Kategorije'
-
-  child2Cat.className = 'form-control category'
-  child2Cat.setAttribute('type', 'text')
-  child2Cat.setAttribute('id', 'category')
-
-  parentCat.appendChild(child1Cat)
-  parentCat.appendChild(child2Cat)
-  parentCat.style.marginTop = '10px'
-
-  nameDOM.parentElement.after(parentCat)
-  categoryDOM = document.getElementById('category')
-  token = 1
-}
-
-const removeCategoryElement = () => {
-  nameDOM.parentElement.parentElement.removeChild(document.getElementById('category').parentElement)
-  categoryDOM = ''
-  token = 0
-}*/

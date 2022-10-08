@@ -189,7 +189,7 @@ header{
     display: grid;
     gap: 1rem;
     /*dodata 2 atributa*/
-    height: 420px;
+    max-height: 420px;
     overflow: auto;
 }
 

@@ -3,7 +3,6 @@ const app = express()
 const students = require('./routes/students')
 const subjects = require('./routes/subjects')
 const studentSubjects = require('./routes/studentSubjects')
-const categories = require('./routes/categories')
 const connectDB = require('./db/connect')
 require('dotenv').config()
 

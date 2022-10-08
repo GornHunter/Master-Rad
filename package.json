@@ -1,7 +1,6 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
@@ -16,5 +15,14 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GornHunter/Master-Rad.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GornHunter/Master-Rad/issues"
+  },
+  "homepage": "https://github.com/GornHunter/Master-Rad#readme",
+  "description": ""
 }
