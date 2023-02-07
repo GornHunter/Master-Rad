@@ -133,7 +133,7 @@ const deleteStudentSubject = async (req, res) => {
         .json({ msg: `No studentSubject with id: '${subjectID}'` });
     }
 
-    res.status(200).json({ studentSubject });
+    res.status(200).json("");
   } catch (error) {
     res.status(500).json({ msg: error });
   }

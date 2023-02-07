@@ -23,7 +23,7 @@ document.querySelector(".load").onchange = () => {
     let reader = new FileReader();
     reader.onload = async function () {
       const students = JSON.parse(this.result);
-      console.log(students.students.length);
+      //console.log(students.students.length);
       for (let i = 0; i < students.students.length; i++) {
         await axios.post("/api/v1/students", {
           firstName: students.students[i].firstName,
